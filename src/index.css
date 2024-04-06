@@ -1,13 +1,232 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('../public/fonts/fonts.css');
+:root {
+  --background: #f6f6f6;
+  --color-error: #ef4444;
+  --btn-primary: #8b5cf6;
+  --text-white: #fff;
+  --color-white: #fff;
+  --color-gray: #e5e7eb;
+  --background-app-rgb: 255, 255, 255;
+  --color-primary-900: 74, 109, 255;
+  --color-primary-800: 92, 124, 255;
+  --color-primary-700: 110, 138, 255;
+  --color-primary-600: 128, 153, 255;
+  --color-primary-500: 146, 167, 255;
+  --color-primary-400: 164, 182, 255;
+  --color-primary-300: 183, 197, 255;
+  --color-primary-200: 201, 211, 255;
+  --color-primary-100: 219, 226, 255;
+  --color-primary-50: 228, 233, 255;
+  --color-secondary-900: 17, 24, 39;
+  --color-secondary-800: 31, 41, 55;
+  --color-secondary-700: 55, 65, 81;
+  --color-secondary-600: 75, 85, 99;
+  --color-secondary-500: 107, 114, 128;
+  --color-secondary-400: 156, 163, 175;
+  --color-secondary-300: 209, 213, 219;
+  --color-secondary-200: 229, 231, 235;
+  --color-secondary-100: 243, 244, 246;
+  --color-secondary-50: 249, 250, 251;
+  --color-secondary-0: 255, 255, 255;
+  --color-success: 0, 192, 115;
+  --color-warning: 255, 153, 0;
+  --color-error: 255, 71, 87;
+  --color-red-500: 239, 68, 68;
+  --color-red-300: 252, 165, 165;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  font-family: 'Vazir', sans-serif;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  user-select: none;
+  background-color: var(--background);
+  direction: rtl;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Vazir', sans-serif;
+}
+
+button {
+  cursor: pointer;
+  outline: none;
+  margin-top: 1.6rem;
+}
+
+button:disabled {
+  cursor: default;
+  background-color: rgb(var(--color-secondary-100), 0.5);
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.header__img img {
+  width: 100%;
+  height: 500px;
+  /* object-fit: cover; */
+}
+/* TABLE */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  /* width: 100%; */
+  /* overflow-y: scroll; */
+  overflow-x: scroll;
+  display: block;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 750px;
+  height: 400px;
+  /* overflow: hidden; */
+  /* width: fit-content; */
+}
+
+table::-webkit-scrollbar {
+  width: 5px;
+}
+
+table::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+table::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #6d6d6d;
+}
+table .title-row {
+  background-color: rgb(var(--color-secondary-100));
+}
+
+table td,
+table th {
+  border-bottom: 1px solid rgb(var(--color-secondary-200));
+  text-align: right;
+  white-space: nowrap;
+}
+
+table th {
+  padding: 0.6rem 1rem;
+  color: rgb(var(--color-secondary-600));
+  font-size: 0.9rem;
+}
+
+table td {
+  font-size: 0.85rem;
+  padding: 1rem 1rem;
+  color: rgb(var(--color-secondary-600));
+}
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.table {
+  overflow-x: hidden;
+}
+.unsorted-table__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.unsorted-table__sort-button {
+  padding: 0.5rem 2rem;
+  border-radius: 10px;
+  background-color: var(--btn-primary);
+  color: var(--color-white);
+  margin-bottom: 1rem;
+}
+/*  react tag input */
+
+.app-container {
+  height: 100vh;
+  min-width: 1280px;
+}
+.form {
+  height: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-control {
+  height: auto;
+  background-color: var(--color-white);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+/* input */
+.textField__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 14px;
+}
+.textField__input {
+  width: calc(100% - 2rem);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--background); /* Equivalent to bg-gray-200 */
+  color: #1f2937; /* Equivalent to text-secondary-900 */
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: all 0.2s;
+  transition-timing-function: cubic-bezier(
+    0.4,
+    0,
+    0.2,
+    1
+  ); /* Equivalent to ease-in-out */
+}
+
+.textField__input:hover {
+  border-color: #93c5fd; /* Equivalent to hover:border-primary-300 */
+}
+
+.textField__input:focus {
+  outline: none; /* Equivalent to focus:outline-none */
+  border-color: #93c5fd; /* Equivalent to focus:border-primary-300 */
+  box-shadow: 0 0 0 0.125rem rgba(59, 130, 246, 0.25); /* Equivalent to focus:shadow-input-focus */
+  background-color: #ffffff;
+}
+
+.text-error {
+  color: var(--color-error);
+  margin-top: 0.5rem;
+  font-size: 12px;
+  display: block;
+  width: 80%;
+  padding-right: 0.5rem;
+}
+
+.btn.btn--primary {
+  width: calc(100% - 2rem);
+  border: none;
+  font-size: 14px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  outline: none;
+  margin-bottom: 1rem;
+  background-color: var(--btn-primary);
+  color: var(--text-white);
 }
