@@ -1,42 +1,53 @@
 import React from 'react';
+import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-type Props = {
+type FormFieldErrors = FieldErrors<{
+  errors: string;
+}>;
+interface TextFieldProps {
   label: string;
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+  register: UseFormRegister<any>;
+  type?: string;
+  required?: boolean;
+  validationSchema?: RegisterOptions;
+  errors?: FormFieldErrors;
+}
 
-export default function TextField({
+const TextField: React.FC<TextFieldProps> = ({
   label,
   name,
   register,
   type = 'number',
-  required,
+  required = false,
   validationSchema,
   errors,
   onChange,
-}: Props) {
+}: TextFieldProps) => {
   return (
-    <div>
-      <label className="textField__label" htmlFor={name}>
+    <div className="text-field">
+      <label className="text-field__label" htmlFor={name}>
         {label}
-        {required && <span className="text-error">*</span>}
+        {required && <span className="text-field__required">*</span>}
       </label>
       <input
         {...register(name, validationSchema)}
         id={name}
         name={name}
-        className="textField__input"
+        className="text-field__input"
         type={type}
         autoComplete="off"
         onChange={onChange}
         min={1}
-        max={55}
+        max={39}
       />
       {errors && errors[name] && (
-        <span className="text-error ">{errors[name]?.message}</span>
+        <span className="text-field__error"> {errors[name]?.message}</span>
       )}
     </div>
   );
-}
+};
+
+export default TextField;

@@ -1,6 +1,6 @@
 function Table({ children }) {
   return (
-    <div className="table">
+    <div className="table-container">
       <table>{children}</table>
     </div>
   );

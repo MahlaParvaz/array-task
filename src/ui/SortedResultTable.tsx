@@ -2,14 +2,18 @@ import React from 'react';
 import { toPersianNumbersWithComma } from '../utils/toPersianNumberWithComma';
 import Table from './Table';
 
-type Props = {};
+interface SortedResultTableProps {
+  sortedArray: number[][];
+}
 
-export default function SortedResultTable({ sortedArray }: Props) {
+const SortedResultTable: React.FC<SortedResultTableProps> = ({
+  sortedArray,
+}) => {
   return (
     <div>
       {sortedArray.length > 0 && (
-        <div>
-          <h2>نتیجه</h2>
+        <div className="sorted-table">
+          <h2> نتیجه مرتب سازی</h2>
 
           <Table>
             <Table.Body>
@@ -28,4 +32,5 @@ export default function SortedResultTable({ sortedArray }: Props) {
       )}
     </div>
   );
-}
+};
+export default SortedResultTable;

@@ -1,15 +1,17 @@
 import { ThreeDots } from 'react-loader-spinner';
 
-function Loading({ width = '75', height = '40' }) {
+function Loading({ width = '65', height = '30' }) {
   return (
     <ThreeDots
       height={height}
       width={width}
       radius={9}
-      color="rgb(var(--color-primary-900))"
+      color="#6d28d9"
       wrapperStyle={{
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
+        padding: '2rem 0',
       }}
       visible={true}
     />
