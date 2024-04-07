@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import TextField from '../ui/Input';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { randomSort } from '../utils/randomSort';
-import UnsortedTable from '../ui/UnsortedTable';
+import ValueTable from '../ui/ValueTable';
 import SortedResultTable from '../ui/SortedResultTable';
-import Loading from '../ui/Loading';
+import Popup from 'reactjs-popup';
+import { toPersianNumbersWithComma } from '../utils/toPersianNumberWithComma';
+
 interface FormData {
   row: number;
   column: number;
-  errors?: string;
 }
 
 const CalculateArray: React.FC = () => {
@@ -17,32 +17,30 @@ const CalculateArray: React.FC = () => {
   const [column, setColumn] = useState<number>(0);
   const [array, setArray] = useState<number[][]>([]);
   const [sortedArray, setSortedArray] = useState<number[][]>([]);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm<FormData>();
 
-  const onSubmit = async (data: { row: number; column: number }) => {
+  const onSubmit = (data: { row: number; column: number }) => {
     const { row: rowValue, column: columnValue } = data;
 
     if (
-      !(
-        rowValue % 2 === 1 &&
-        columnValue % 2 === 1 &&
-        rowValue >= 4 &&
-        columnValue >= 4
-      )
+      rowValue % 2 !== 1 ||
+      columnValue % 2 !== 1 ||
+      rowValue < 4 ||
+      columnValue < 4
     ) {
-      toast.error(
-        'ابعاد باید فرد و بزرگتر از 3 باشند ابعاد انتخابی بین 3 تا 39 باشند.'
-      );
+      toast.error('ابعاد باید اعداد فرد و بزرگتر از 3 باشند.');
       return;
     }
-    setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    if (isNaN(rowValue) || isNaN(columnValue)) {
+      toast.error('مقادیر باید عدد باشند.');
+      return;
+    }
 
     setRow(rowValue);
     setColumn(columnValue);
@@ -51,15 +49,13 @@ const CalculateArray: React.FC = () => {
     for (let i = 0; i < rowValue; i++) {
       const column: number[] = [];
       for (let j = 0; j < columnValue; j++) {
-        column[j] = i * columnValue + j + 1;
+        column[j] = 0;
       }
       newArray.push(column);
     }
-    setIsSubmitting(false);
+    setArray(newArray);
 
-    const randomSortedArray = newArray.map((row) => randomSort(row));
-    setArray(randomSortedArray);
-    setSortedArray([]);
+    setIsPopupOpen(true);
   };
 
   const handleChange = (
@@ -67,9 +63,10 @@ const CalculateArray: React.FC = () => {
     columnIndex: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = parseInt(event.target.value, 10);
+    const value = parseInt(event.target.value);
 
     if (isNaN(value)) {
+      toast.error('لطفاً یک عدد معتبر وارد کنید.');
       return;
     }
 
@@ -82,10 +79,7 @@ const CalculateArray: React.FC = () => {
     setArray(newArray);
   };
 
-  const sortArray = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
+  const sortArray = () => {
     const sortedArray: number[][] = [...array];
     sortedArray.forEach((row) => {
       row.sort((a, b) => b - a);
@@ -96,20 +90,24 @@ const CalculateArray: React.FC = () => {
         row.sort((a, b) => a - b);
       }
     });
-    setIsLoading(false);
     setSortedArray(sortedArray);
   };
+
   return (
     <div className="form">
       <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          label="تعداد سطر  "
+          label="تعداد سطر"
           name="row"
-          value={row.toString()}
-          onChange={(event) => setRow(parseInt(event.target.value, 10))}
+          value={toPersianNumbersWithComma(row.toString())}
+          onChange={(event) => setRow(parseInt(event.target.value))}
           register={register}
           validationSchema={{
             required: 'تعداد سطر ها باید عددی بزرگتر از 3 و فرد باشد.',
+            pattern: {
+              value: /^[0-9]*$/,
+              message: 'فقط مجاز به وارد کردن عدد می باشید.',
+            },
           }}
           errors={errors}
         />
@@ -117,30 +115,52 @@ const CalculateArray: React.FC = () => {
           label="تعداد ستون  "
           name="column"
           value={column.toString()}
-          onChange={(event) => setColumn(parseInt(event.target.value, 10))}
+          onChange={(event) => setColumn(parseInt(event.target.value))}
           register={register}
           validationSchema={{
             required: 'تعداد ستون ها باید عددی بزرگتر از 3 و فرد باشد.',
+            pattern: {
+              value: /^[0-9]*$/,
+              message: 'فقط مجاز به وارد کردن عدد می باشید.',
+            },
           }}
           errors={errors}
         />
+
         <div>
-          {isSubmitting ? (
-            <Loading />
-          ) : (
-            <button type="submit" className="btn btn--primary">
-              ایجاد آرایه
-            </button>
-          )}
+          <button type="submit" className="btn btn--primary">
+            ایجاد آرایه
+          </button>
         </div>
       </form>
-      <UnsortedTable
-        array={array}
-        sortArray={sortArray}
-        onChange={handleChange}
-        isSubmitting={isLoading}
-      />
-      <SortedResultTable sortedArray={sortedArray} />
+      <Popup
+        open={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        modal
+        position="right center"
+        contentStyle={{
+          background: 'rgba(0, 0, 0, 0.6)',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        closeOnDocumentClick
+      >
+        {array.length > 0 && (
+          <ValueTable
+            array={array}
+            sortArray={sortArray}
+            onChange={handleChange}
+            onClose={() => setIsPopupOpen(false)}
+          />
+        )}
+      </Popup>
+
+      {sortedArray.length > 0 && (
+        <SortedResultTable sortedArray={sortedArray} />
+      )}
     </div>
   );
 };

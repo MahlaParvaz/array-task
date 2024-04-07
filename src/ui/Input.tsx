@@ -7,7 +7,7 @@ type FormFieldErrors = FieldErrors<{
 interface TextFieldProps {
   label: string;
   name: string;
-  value: string;
+  value: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   register: UseFormRegister<any>;
   type?: string;
@@ -20,7 +20,7 @@ const TextField: React.FC<TextFieldProps> = ({
   label,
   name,
   register,
-  type = 'number',
+  type = 'text',
   required = false,
   validationSchema,
   errors,
@@ -33,15 +33,20 @@ const TextField: React.FC<TextFieldProps> = ({
         {required && <span className="text-field__required">*</span>}
       </label>
       <input
-        {...register(name, validationSchema)}
+        {...register(name, {
+          ...validationSchema,
+          min: { value: 1, message: 'مقدار ورودی باید حداقل تا عدد 1 باشد.' },
+          max: {
+            value: 19,
+            message: 'مقدار ورودی باید حداکثر تا عدد 19 باشد.',
+          },
+        })}
         id={name}
         name={name}
         className="text-field__input"
         type={type}
         autoComplete="off"
         onChange={onChange}
-        min={1}
-        max={39}
       />
       {errors && errors[name] && (
         <span className="text-field__error"> {errors[name]?.message}</span>
