@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <div>
       <header className="header">
         <div className="header__img">
-          <img src="/public/img/wave.svg" alt="can't show image" />
+          <img src="/img/wave.svg" alt="can't show image" />
         </div>
       </header>
       <CreateArray />
