@@ -34,7 +34,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <input
         {...register(name, {
           ...validationSchema,
-          min: { value: 1, message: 'مقدار ورودی باید حداقل تا عدد 1 باشد.' },
+          min: { value: 1, message: 'مقدار ورودی باید حداقل تا عدد 3 باشد.' },
           max: {
             value: 19,
             message: 'مقدار ورودی باید حداکثر تا عدد 19 باشد.',
