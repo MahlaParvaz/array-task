@@ -1,8 +1,9 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import { Toaster } from 'react-hot-toast';
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="app-container">
       <Toaster />

@@ -13,7 +13,7 @@ interface ValueTableProps {
   onClose?: () => void;
 }
 
-const ValueTable: React.FC<ValueTableProps> = ({
+const InitValueTable: React.FC<ValueTableProps> = ({
   array,
   sortArray,
   onChange,
@@ -33,15 +33,17 @@ const ValueTable: React.FC<ValueTableProps> = ({
   return (
     <div className="modal">
       {array.length > 0 && (
-        <div className="unsorted-table">
-          <MdOutlineCancel
-            className="unsorted-table__cancel-btn"
-            onClick={() => {
-              onClose?.();
-            }}
-          />
+        <div className="init-table ">
+          <div className="btn btn--cancel ">
+            <MdOutlineCancel
+              className="cancel-icon"
+              onClick={() => {
+                onClose?.();
+              }}
+            />
+          </div>
 
-          <div className="unsorted-table__header">
+          <div className="init-table__header ">
             <p>
               مقادیر مورد نظر برای هر سطر و ستون را وارد کنید.
               <br />
@@ -50,7 +52,7 @@ const ValueTable: React.FC<ValueTableProps> = ({
             </p>
 
             <button
-              className="btn unsorted-table__sort-button"
+              className="btn btn--sort "
               onClick={() => {
                 sortArray?.();
                 onClose?.();
@@ -86,4 +88,4 @@ const ValueTable: React.FC<ValueTableProps> = ({
   );
 };
 
-export default ValueTable;
+export default InitValueTable;

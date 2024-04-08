@@ -7,7 +7,7 @@ type FormFieldErrors = FieldErrors<{
 interface TextFieldProps {
   label: string;
   name: string;
-  value: number;
+  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   register: UseFormRegister<any>;
   type?: string;
@@ -30,7 +30,6 @@ const TextField: React.FC<TextFieldProps> = ({
     <div className="text-field">
       <label className="text-field__label" htmlFor={name}>
         {label}
-        {required && <span className="text-field__required">*</span>}
       </label>
       <input
         {...register(name, {

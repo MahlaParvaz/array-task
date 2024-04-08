@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import TextField from '../ui/Input';
+import TextField from '../ui/TexrField';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import ValueTable from '../ui/ValueTable';
+import InitValueTable from '../ui/InitValueTable';
 import SortedResultTable from '../ui/SortedResultTable';
 import Popup from 'reactjs-popup';
-import { toPersianNumbersWithComma } from '../utils/toPersianNumberWithComma';
 
 interface FormData {
   row: number;
   column: number;
 }
 
-const CalculateArray: React.FC = () => {
+const CreateArray: React.FC = () => {
   const [row, setRow] = useState<number>(0);
   const [column, setColumn] = useState<number>(0);
   const [array, setArray] = useState<number[][]>([]);
@@ -56,6 +55,7 @@ const CalculateArray: React.FC = () => {
     setArray(newArray);
 
     setIsPopupOpen(true);
+    reset();
   };
 
   const handleChange = (
@@ -75,7 +75,6 @@ const CalculateArray: React.FC = () => {
         ? row.map((cell, j) => (j === columnIndex ? value : cell))
         : row
     );
-
     setArray(newArray);
   };
 
@@ -94,12 +93,12 @@ const CalculateArray: React.FC = () => {
   };
 
   return (
-    <div className="form">
+    <div className="sorting-array">
       <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="تعداد سطر"
           name="row"
-          value={toPersianNumbersWithComma(row.toString())}
+          value={row.toString()}
           onChange={(event) => setRow(parseInt(event.target.value))}
           register={register}
           validationSchema={{
@@ -149,7 +148,7 @@ const CalculateArray: React.FC = () => {
         closeOnDocumentClick
       >
         {array.length > 0 && (
-          <ValueTable
+          <InitValueTable
             array={array}
             sortArray={sortArray}
             onChange={handleChange}
@@ -165,4 +164,4 @@ const CalculateArray: React.FC = () => {
   );
 };
 
-export default CalculateArray;
+export default CreateArray;
