@@ -281,13 +281,13 @@ table tr:nth-child(even) {
     margin-right: 0;
   }
   .table-container {
-    width: 750px;
+    width: 750px !important;
   }
   .sorted-table {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
   }
 }
-@media screen and (max-width: 760px) {
+@media screen and (min-width: 760px) {
   .modal {
     width: 700px;
   }
